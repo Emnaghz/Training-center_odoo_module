@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!--Tree view-->
+            <record model="ir.ui.view" id="registration_tree_view">
+                <field name="name">registration.registration.tree</field>
+                <field name="model">registration.registration</field>
+                <field name="type">tree</field>
+                <field name="arch" type="xml">
+                    <tree string="Registration">
+                        <field name="name"/>
+                        <field name="cin"/>
+												<field name="start_date"/>
+                        <field name="end_date"/>
+
+                    </tree>
+                </field>
+            </record>
+
+		<!--search view-->
+        <record id="registration_search_view" model="ir.ui.view">
+            <field name="name">registration.registration.search</field>
+            <field name="model">registration.registration</field>
+            <field name="arch" type="xml">
+                <search string="search right here">
+                    <group expand="0" string="Group By">
+                        <filter string="Modules" name="Modules" context="{'group_by':'module_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    <!--kanban view-->
+		<record model="ir.ui.view" id="module_kanban_view">
+			<field name="name">registration.registration.Kanban</field>
+			<field name="model">registration.registration</field>
+			<field name="arch" type="xml">
+				<kanban>
+					<templates>
+						<field name="name" />
+						<field name="cin" />
+							<t t-name="kanban-box">
+							<div class="oe_kanban_global_click">
+									<field name="name"/>
+									<div class="oe_kanban_details">
+											<strong>
+													<field name="cin"/>
+											</strong>
+											<ul>
+													<li t-if="record.name.raw_value"><field name="name"/></li>
+											</ul>
+									</div>
+							</div>
+						</t>
+					</templates>
+				</kanban>
+			</field>
+		</record>
+
+    <!--form view-->
+		<record model="ir.ui.view" id="registration_form_view">
+			<field name="name">registration.registration.form</field>
+			<field name="model">registration.registration</field>
+			<field name="type">form</field>
+			<field name="arch" type="xml">
+				<form string="Registrations">
+				<sheet>
+					<group>
+						<group>
+							<field name="name"/>
+							<field name="email"/>
+							<field name="phone"/>
+							<field name="cin"/>
+							<field name="module_id"/>
+						</group>
+						<group>
+							<field name="start_date"/>
+							<field name="end_date"/>
+						</group>
+					</group>
+				</sheet>
+			</form>
+			</field>
+		</record>
+
+    <record id="registration_action_view" model="ir.actions.act_window">
+        <field name="name">Registration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">registration.registration</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+</odoo>
