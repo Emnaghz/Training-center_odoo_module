@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+			<!-- Menus -->
+			<menuitem id="module_root" name="Training Center" />
+				<menuitem id="module_root_menu" parent="module_root" name="Courses" sequence="1"/>
+					<menuitem id="module_menu" parent="module_root_menu" name="Modules"  action="module_action_view" />
+					<menuitem id="level_menu" parent="module_root_menu" name="Levels"  action="level_action_view" />
+					<menuitem id="teacher_menu" parent="module_root_menu" name="Teachers"  action="teachers_view_action" />
+
+					<menuitem id="registration_menu" parent="module_root" name="Registration"  action="registration_action_view" />
+
+					<menuitem id="claim_menu" parent="module_root" name="Claims"  action="claim_action_view" />
+
+</odoo>

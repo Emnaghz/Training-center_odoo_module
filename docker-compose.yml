@@ -1,0 +1,50 @@
+services:
+  odoo:
+    image: odoo:17.0
+    depends_on:
+      - postgres
+    user: "0:0"
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo-web-data:/var/lib/odoo
+      - ./config:/etc/odoo
+      - ./addons:/mnt/extra-addons
+    environment:
+      - HOST=postgres
+      - USER=odoo
+      - PASSWORD=odoo
+      - DBNAME=postgres
+    command: >
+      odoo --config=/etc/odoo/odoo.conf -d odoo -u training_center
+  postgres:
+    image: postgres:15
+    ports:
+      - "5000:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data/pgdata
+  
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres
+    ports:
+      - "5050:80"
+    restart: unless-stopped
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+
+volumes:
+  odoo-web-data:
+  odoo-db-data:
+  pgadmin-data:

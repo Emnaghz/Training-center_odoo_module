@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Tree view-->
+    <record model="ir.ui.view" id="claim_tree_view">
+        <field name="name">claim.claim.view.tree</field>
+        <field name="model">claim.claim</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree string="Claim" decoration-success="state == 'done'"
+            decoration-danger="state == 'cancel'"
+            decoration-info="state == 'new'"
+            decoration-primary="state == 'valid'">
+                <field name="user_id"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="start_date"/>
+                <field name="end_date" optional="hide"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--calendar view-->
+    <record model="ir.ui.view" id="claim_calendar_view">
+        <field name="name">claim.claim.view.calendar</field>
+        <field name="model">claim.claim</field>
+        <field name="arch" type="xml">
+            <calendar string="Reclamation Calendar" date_start="start_date" mode="month" color="user_id">
+                <field name="name"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!--form view-->
+        <record model="ir.ui.view" id="claim_form_view">
+            <field name="name">claim.claim.form</field>
+            <field name="model">claim.claim</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Claim">
+                    <header>
+                        <button name="action_draft" id="action_draft" data-hotkey="v" string="Mettre en corbeille"
+                                type="object"/>
+                        <button name="action_validate" id="action_validate" data-hotkey="v" string="Valider"
+                                class="btn-primary" type="object"/>
+                        <button name="action_done" id="action_done" data-hotkey="v" string="Mark as Done"
+                                class="btn-primary" type="object"/>
+<!--                        states: the button will be visible only on the listed states-->
+                        <button name="action_cancel" id="action_cancel" data-hotkey="v" string="Annuler" type="object"
+                        
+                        />
+                        <!-- states="draft,done,confirm"  -->
+<!--                        to make the widget clickable: options="{'clickable': '1'}"-->
+                        
+                    </header>
+                    <sheet>
+                        <div class="o_lead_opportunity_form_inline_fields">
+                            <field name="priority" widget="priority" class="oe_inline align-top"/>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id" readonly="1"/>
+                                <field name="name"/>
+                                <field name="code"/>
+                                <field name="module_id"/>
+                                <field name="description"/>
+                            </group>
+                            <group>
+                                <field name="start_date" readonly="1"/>
+                                <field name="end_date" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    <!--kanban view-->
+    <record id='claim_kanban_view' model='ir.ui.view'>
+        <field name="name">claim.claim.kanban</field>
+        <field name="model">claim.claim</field>
+        <field name="arch" type="xml">
+            <kanban string="Models" class="o_res_partner_kanban">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div><strong class="o_kanban_record_title oe_partner_heading"><field name="name"/></strong></div>
+                            <div><field name="state"/></div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!--search view-->
+        <record id="claim_search_view" model="ir.ui.view">
+            <field name="name">claim.claim.search</field>
+            <field name="model">claim.claim</field>
+            <field name="arch" type="xml">
+                <search string="search right here">
+<!--                    <field name="name" string="string" domain="[()]"/>-->
+                    <field name="name"/>
+                    <field name="code"/>
+
+                    <separator/>
+                    <filter string="Corbeille" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Nouvelle" name="new" domain="[('state', '=', 'new')]"/>
+                    <filter string="Validée" name="valid" domain="[('state', '=', 'valid')]"/>
+                    <filter string="Terminée" name="done" domain="[('state', '=', 'done')]"/>
+                    <filter string="Annulée" name="cancel" domain="[('state', '=', 'cancel')]"/>
+
+                    <group expand="0" string="Group By">
+                        <filter string="Responsable" name="responsable" context="{'group_by':'user_id'}"/>
+                        <filter string="Status" name="Status" context="{'group_by':'state'}"/>
+                    </group>
+
+                </search>
+            </field>
+        </record>
+
+        <!--graph view-->
+        <record model="ir.ui.view" id="claim_graph_view">
+            <field name="name">claim.claim.view.graph</field>
+            <field name="model">claim.claim</field>
+            <field name="arch" type="xml">
+                <graph string="Graphe">
+                    <field name="state"/>
+                </graph>
+            </field>
+        </record>
+
+    <!--Action-->
+    <record id="claim_action_view" model="ir.actions.act_window">
+        <field name="name">Claims</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">claim.claim</field>
+        <field name="view_mode">tree,form,calendar,graph</field>
+        <field name="domain">[
+            '|',
+            ('user_id', '=', uid),
+            ('user_id.is_teacher', '=', False)
+        ]</field>
+    </record>
+
+
+</odoo>
