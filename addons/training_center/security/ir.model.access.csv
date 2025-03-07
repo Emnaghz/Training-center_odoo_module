@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_modules,access.training.center,model_module_module,,1,1,1,1
-access_level,access.level,model_level_level,group_administrator,1,1,1,1
-access_teachers,access.teachers,model_res_users,group_administrator,1,1,1,1
-access_claims,access.training.center,model_claim_claim,,1,1,1,1
-access_registrations,access.training.center,model_registration_registration,group_administrator,1,1,1,1
